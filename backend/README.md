@@ -12,19 +12,18 @@ Incluye:
 ## 📦 Estructura del repositorio
 ```
 /backend
-/src
-/controllers
-/middlewares
-/routes
-/utils
-app.js
-server.js
-/models
-/migrations
-/config/config.js
-Dockerfile
-.env.docker
-docker-compose.yml
+  /src
+    /controllers
+    /middlewares
+    /routes
+    /utils
+  app.js
+  server.js
+  /models
+  /migrations
+  /config/config.js
+  Dockerfile
+  .env.docker
 ```
 
 ## 🚀 Despliegue 

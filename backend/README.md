@@ -12,7 +12,7 @@ Incluye:
 ## 📦 Estructura del repositorio
 ```
 /backend
-/src
+  /src
 /controllers
 /middlewares
 /routes

@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    container_name: coworking_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: coworking_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  back:
+    build: ./backend
+    container_name: coworking_api
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env.docker
+    depends_on:
+      - db
+    ports:
+      - "3001:3001"
+
+volumes:
+  pgdata:

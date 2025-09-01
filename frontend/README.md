@@ -50,7 +50,7 @@ BACKEND_API_PREFIX=/api
 ```
 
 Ejecución con Docker Compose → frontend/.env.docker:
-# Dentro de Docker, el backend se resuelve por nombre de servicio: "back"
+Dentro de Docker, el backend se resuelve por nombre de servicio: "back"
 ```
 BACKEND_BASE_URL=http://back:3001
 API_KEY=supersecreta123

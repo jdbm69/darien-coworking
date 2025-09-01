@@ -2,16 +2,18 @@
 // Proxy interno Next → Backend para GET /espacios. Oculta la API Key al cliente
 
 import { callBackend } from "@/lib/backendClient";
+import normalizeEspacios from "@/utils/normalizeHelper";
 
 // Funcion para obtener los espacios 
 export async function GET() {
   try {
     const data = await callBackend("/espacios");
-    return Response.json(data);
+    const list = normalizeEspacios(data);
+    return Response.json(list);
   } catch (e) {
     console.error("[/api/espacios GET]", e);
+    const code = e?.status || 502;
     const msg = e?.message || "Error interno";
-    const code = Number((msg.match(/Error (\d+)/)?.[1])) || 502;
     return Response.json({ message: msg }, { status: code });
   }
 }

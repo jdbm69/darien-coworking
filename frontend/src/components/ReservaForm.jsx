@@ -1,17 +1,43 @@
-// src/components/ReservaForm.jsx
-// Formulario para crear una reserva con validaciones básicas
+// Ruta: src/components/ReservaForm.jsx
+// Propósito: Formulario para crear una reserva. Si el prop `espacios` viene vacío,
 
 "use client";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { apiFetch } from "@/lib/fetcher";
 import ErrorModal from "./ErrorModal";
 
 export default function ReservaForm({ espacios = [] }) {
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const { register, handleSubmit, reset, formState: { errors }, setValue } = useForm({
+    defaultValues: { espacioId: "" }
+  });
+
   const [msg, setMsg] = useState("");
   const [sending, setSending] = useState(false);
   const [showModal, setShowModal] = useState(false);
+
+  const [espaciosList, setEspaciosList] = useState(Array.isArray(espacios) ? espacios : []);
+  const [loadingEsp, setLoadingEsp] = useState(false);
+
+  useEffect(() => {
+    if (Array.isArray(espacios) && espacios.length) {
+      setEspaciosList(espacios);
+      setValue("espacioId", (v) => (v === undefined || v === null ? "" : v));
+    }
+  }, [espacios, setValue]);
+
+  useEffect(() => {
+    if (espaciosList.length === 0) {
+      setLoadingEsp(true);
+      apiFetch("/api/espacios")
+        .then((list) => {
+          setEspaciosList(Array.isArray(list) ? list : []);
+          setValue("espacioId", "");
+        })
+        .catch((e) => setMsg("⚠️ " + (e?.message || "No se pudieron cargar los espacios")))
+        .finally(() => setLoadingEsp(false));
+    }
+  }, [espaciosList.length, setValue]);
 
   const isValidRange = (fecha, hIni, hFin) => {
     const start = new Date(`${fecha}T${hIni}:00`);
@@ -39,17 +65,19 @@ export default function ReservaForm({ espacios = [] }) {
 
       setMsg("✅ Reserva creada");
       setShowModal(true);
-      // avisar al listado
       if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("reservas:refresh"));
-      reset();
+      reset({ espacioId: "" });
     } catch (e) {
-      // Muestra literalmente lo que mande el backend (p.ej. "Máximo 3 reservas por semana" o "Horario solapado")
       setMsg("⚠️ " + (e?.message || "No se pudo crear la reserva"));
       setShowModal(true);
     } finally {
       setSending(false);
     }
   };
+
+  const placeholderText =
+    loadingEsp ? "Cargando espacios…" :
+    (espaciosList.length ? "Selecciona espacio…" : "No hay espacios disponibles");
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="form">
@@ -58,12 +86,26 @@ export default function ReservaForm({ espacios = [] }) {
       <div className="cont-part-form">
         <div className="cont-lb-input">
           <label className="form__label">Espacio</label>
-          <select className="select" {...register("espacioId", { required: true, valueAsNumber: true })}>
-            <option value="">Selecciona espacio…</option>
-            {espacios.map((e) => (
-              <option key={e.id} value={e.id}>{e.nombre}</option>
-            ))}
+
+          <select
+            className="select"
+            disabled={loadingEsp || espaciosList.length === 0}
+            {...register("espacioId", { required: true, valueAsNumber: true })}
+          >
+            {!loadingEsp && espaciosList.length === 0 && (
+              <option value="">No hay espacios disponibles</option>
+            )}
+            {loadingEsp && <option value="">Cargando espacios…</option>}
+
+            {espaciosList.map((e) => {
+              const id = Number(e.id ?? e.espacioId ?? e.ID);
+              const name = e.nombre ?? e.name ?? e.titulo ?? `Espacio #${id}`;
+              return (
+                <option key={id} value={id}>{name}</option>
+              );
+            })}
           </select>
+
           {errors.espacioId && <small className="form__error">Requerido</small>}
         </div>
 
@@ -79,7 +121,6 @@ export default function ReservaForm({ espacios = [] }) {
       </div>
 
       <div className="cont-part-form">
-
         <div className="cont-lb-input">
           <label className="form__label">Fecha</label>
           <input className="input" type="date" {...register("fecha", { required: true })} />
@@ -96,10 +137,11 @@ export default function ReservaForm({ espacios = [] }) {
         </div>
       </div>
 
-      <button className="btn btn--primary" type="submit" disabled={sending}>
+      <button className="btn btn--primary" type="submit" disabled={sending || loadingEsp || espaciosList.length === 0}>
         {sending ? "Creando…" : "Reservar"}
       </button>
-      {showModal && <ErrorModal msg={msg} setShowModal={setShowModal} setMsg={setMsg}/>}
+
+      {!!msg && <ErrorModal msg={msg} setShowModal={() => {}} setMsg={setMsg} />}
     </form>
   );
 }

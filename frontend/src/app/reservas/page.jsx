@@ -4,11 +4,13 @@
 import { callBackend } from "@/lib/backendClient";
 import ReservasList from "@/components/ReservaList";
 import ReservaForm from "@/components/ReservaForm";
+import normalizeEspacios from "@/utils/normalizeHelper";
 
 export default async function ReservasPage() {
   let espacios = [];
   try {
-    espacios = await callBackend("/espacios");
+    const raw = await callBackend("/espacios");
+    espacios = normalizeEspacios(raw);
   } catch {
     espacios = [];
   }
@@ -17,6 +19,7 @@ export default async function ReservasPage() {
     <>
       <h1>Reservas</h1>
       <ReservaForm espacios={espacios} />
+      <div className="spacer-2" />
       <ReservasList />
     </>
   );

@@ -1,0 +1,29 @@
+// src/styles/components/_card.scss
+// Estilos de tarjetas reutilizables
+
+.card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  transition: all .25s ease;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .card__title { 
+    margin-bottom: 15px; 
+    padding: 0 40px 10px 40px;
+    font-size: 20px;
+    text-align: center;
+    border-bottom: 2px solid var(--border);
+    color: #567cd4;
+  }
+  .title-span {
+    color: rgb(255, 255, 255)
+  }
+}
+
+.card--hover:hover { 
+  background-color: var(--border); 
+}

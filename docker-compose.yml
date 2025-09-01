@@ -1,3 +1,6 @@
+# docker-compose.yml
+# Imagen global de la app para docker (api, db y front)
+
 version: "3.9"
 
 services:
@@ -24,6 +27,17 @@ services:
       - db
     ports:
       - "3001:3001"
+
+  front:
+    build: ./frontend
+    container_name: coworking_front
+    restart: unless-stopped
+    env_file:
+      - ./frontend/.env.docker
+    depends_on:
+      - back
+    ports:
+      - "3000:3000"
 
 volumes:
   pgdata:

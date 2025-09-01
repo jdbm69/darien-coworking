@@ -1,0 +1,38 @@
+// src/styles/components/_buttons.scss
+// Estilos para botones
+
+.btn {
+  padding: 10px 30px; 
+  border-radius: 8px; 
+  border: 1px solid transparent;
+  background-color: #567cd4;
+  color: var(--fg); 
+  cursor: pointer;
+  margin-top: 20px;
+  transition: all 0.25s linear;
+}
+
+.btn:hover {
+    background-color: var(--surface);
+}
+
+.btn:disabled { 
+    opacity: .5; 
+    cursor: not-allowed; 
+}
+
+.btn--primary { 
+    background: var(--primary); 
+}
+
+.btn--primary:hover  {
+    background: #082e16; 
+}
+
+.btn--danger { 
+    background: var(--danger); 
+}
+
+.btn--danger:hover { 
+    background: #3a0b0b; 
+}

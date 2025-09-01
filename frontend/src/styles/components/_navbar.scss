@@ -1,0 +1,21 @@
+// src/styles/components/_navbar.scss
+// Estilos de la barra de navegación.
+
+.nav {
+  border-bottom: 2px solid var(--border);
+  background: #0f1420;
+  .nav__inner {
+    max-width: 1100px; 
+    margin: 0 auto; 
+    padding: 20px 30px;
+    display: flex; 
+    gap: 50px;
+    .nav__link { 
+      color: var(--fg); 
+      transition: all 0.25s ease-in-out;
+    }
+    .nav__link--active, .nav__link:hover { 
+      color: #567cd4;
+    }
+  }
+}

@@ -1,0 +1,15 @@
+// src/styles/base/_reset.scss
+// Normalización básica de estilos
+
+* { 
+    box-sizing: border-box; 
+}
+
+html, body { 
+    margin: 0; 
+    padding: 0; 
+}
+
+a { 
+    text-decoration: none; 
+}

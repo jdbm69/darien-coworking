@@ -1,0 +1,10 @@
+// src/styles/components/_pagination.scss
+// Estilos para el componente de paginación
+
+.pagination {
+  display: flex; 
+  gap: 20px; 
+  align-items: center; 
+  justify-content: center;
+  margin-top: 30px;
+}

@@ -1,0 +1,15 @@
+// src/styles/index.scss
+// Punto de entrada Sass. Importa reset, tokens, layout, tipografía y estilos de componentes.
+
+@use "./base/reset";
+@use "./base/tokens";
+@use "./base/layout";
+@use "./base/typography";
+@use "./components/navbar";
+@use "./components/card";
+@use "./components/buttons";
+@use "./components/forms";
+@use "./components/grid";
+@use "./components/pagination";
+@use "./components/loader";
+@use "./components/errorModal";

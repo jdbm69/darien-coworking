@@ -1,0 +1,26 @@
+// src/styles/components/_grid.scss
+// Rejillas responsivas
+
+.grid { 
+    display: grid; 
+    gap: 16px; 
+}
+
+.grid--3 { 
+    grid-template-columns: repeat(2, 1fr); 
+    padding-top: 20px;
+}
+
+.grid--auto { 
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    padding-top: 20px;
+}
+
+@media (max-width: 900px){ 
+    .grid--3 { grid-template-columns: 1fr 1fr; } 
+}
+
+@media (max-width: 600px){ 
+    .grid--3 { grid-template-columns: 1fr; } 
+}
